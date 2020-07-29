@@ -1,0 +1,34 @@
+---
+:source:
+  :path: test
+  :file: test_circularBufferPrint.c
+:successes:
+- :test: test_printEmpty
+  :line: 25
+  :message: ''
+  :unity_test_time: 0
+- :test: test_PrintAfterOneIsPut
+  :line: 32
+  :message: ''
+  :unity_test_time: 0
+- :test: test_PrintNotYetWrappedOrFull
+  :line: 39
+  :message: ''
+  :unity_test_time: 0
+- :test: test_PrintNotYetWrappedAndIsFull
+  :line: 49
+  :message: ''
+  :unity_test_time: 0
+- :test: test_PrintOldToNewWhenWrappedAndFull
+  :line: 64
+  :message: ''
+  :unity_test_time: 0
+:failures: []
+:ignores: []
+:counts:
+  :total: 5
+  :passed: 5
+  :failed: 0
+  :ignored: 0
+:stdout: []
+:time: 0.002283531000102812
