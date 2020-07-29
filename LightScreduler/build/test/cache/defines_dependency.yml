@@ -1,0 +1,9 @@
+---
+src/LightControllerSpy.c:
+- TEST
+src/FakeTimeService.c:
+- TEST
+src/LightScheduler.c:
+- TEST
+src/TimeService.c:
+- TEST
