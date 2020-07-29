@@ -1,0 +1,78 @@
+---
+:source:
+  :path: test
+  :file: test_leds.c
+:successes:
+- :test: test_check_init_values
+  :line: 24
+  :message: ''
+  :unity_test_time: 0
+- :test: test_turn_led_on
+  :line: 29
+  :message: ''
+  :unity_test_time: 0
+- :test: test_turn_led_off
+  :line: 35
+  :message: ''
+  :unity_test_time: 0
+- :test: test_turn_multiple_leds_on
+  :line: 42
+  :message: ''
+  :unity_test_time: 0
+- :test: test_turn_all_leds
+  :line: 49
+  :message: ''
+  :unity_test_time: 0
+- :test: test_turn_any_leds_off
+  :line: 56
+  :message: ''
+  :unity_test_time: 0
+- :test: test_read_leds_state
+  :line: 63
+  :message: ''
+  :unity_test_time: 0
+- :test: test_upper_lower_bounds
+  :line: 70
+  :message: ''
+  :unity_test_time: 0
+- :test: test_out_of_bounds_turn_on
+  :line: 77
+  :message: ''
+  :unity_test_time: 0
+- :test: test_out_of_bounds_turn_off
+  :line: 86
+  :message: ''
+  :unity_test_time: 0
+- :test: test_out_of_bounds_produces_runtime_error
+  :line: 97
+  :message: ''
+  :unity_test_time: 0
+- :test: test_led_isOn
+  :line: 106
+  :message: ''
+  :unity_test_time: 0
+- :test: test_out_of_bounds_leds_are_always_off
+  :line: 113
+  :message: ''
+  :unity_test_time: 0
+- :test: test_led_isOff
+  :line: 121
+  :message: ''
+  :unity_test_time: 0
+- :test: test_turn_off_multiple_leds
+  :line: 128
+  :message: ''
+  :unity_test_time: 0
+- :test: test_turn_off_all_leds
+  :line: 137
+  :message: ''
+  :unity_test_time: 0
+:failures: []
+:ignores: []
+:counts:
+  :total: 16
+  :passed: 16
+  :failed: 0
+  :ignored: 0
+:stdout: []
+:time: 0.004513416999543551
