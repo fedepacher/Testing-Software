@@ -1,0 +1,26 @@
+---
+:source:
+  :path: test
+  :file: test_FormatOutputSpy.c
+:successes:
+- :test: test_FormatOtputSpy_printf
+  :line: 17
+  :message: ''
+  :unity_test_time: 0
+- :test: test_PrintMultipleTimes
+  :line: 24
+  :message: ''
+  :unity_test_time: 0
+- :test: test_PrintMultipleOutputsPastFull
+  :line: 31
+  :message: ''
+  :unity_test_time: 0
+:failures: []
+:ignores: []
+:counts:
+  :total: 3
+  :passed: 3
+  :failed: 0
+  :ignored: 0
+:stdout: []
+:time: 0.002845932001946494
