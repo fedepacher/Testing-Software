@@ -1,0 +1,62 @@
+---
+:source:
+  :path: test
+  :file: test_LightScheduler.c
+:successes:
+- :test: test_LightControllerSpy_Create
+  :line: 33
+  :message: ''
+  :unity_test_time: 0
+- :test: test_RememberTheLastLightIdControlled
+  :line: 38
+  :message: ''
+  :unity_test_time: 0
+- :test: test_NoScheduleNothingHappens
+  :line: 47
+  :message: ''
+  :unity_test_time: 0
+- :test: test_ScheduleOnEverydayNotTimeYet
+  :line: 58
+  :message: ''
+  :unity_test_time: 0
+- :test: test_ScheduleWeekEndItsMonday
+  :line: 84
+  :message: ''
+  :unity_test_time: 0
+- :test: test_ScheduleTuesdayButItsMonday
+  :line: 92
+  :message: ''
+  :unity_test_time: 0
+- :test: test_ScheduleWeekEndItsFriday
+  :line: 108
+  :message: ''
+  :unity_test_time: 0
+:failures:
+- :test: test_ScheduleOnEverydayItsTime
+  :line: 70
+  :message: Expected 3 Was -1
+  :unity_test_time: 0
+- :test: test_ScheduleOffEverydayItsTime
+  :line: 79
+  :message: Expected 3 Was -1
+  :unity_test_time: 0
+- :test: test_ScheduleTuesdayAndItsTuesday
+  :line: 14
+  :message: Expected 3 Was -1
+  :unity_test_time: 0
+- :test: test_ScheduleWeekEndItsSaturday
+  :line: 14
+  :message: Expected 3 Was -1
+  :unity_test_time: 0
+- :test: test_ScheduleWeekEndItsSunday
+  :line: 14
+  :message: Expected 3 Was -1
+  :unity_test_time: 0
+:ignores: []
+:counts:
+  :total: 12
+  :passed: 7
+  :failed: 5
+  :ignored: 0
+:stdout: []
+:time: 0.0021868139956495725
