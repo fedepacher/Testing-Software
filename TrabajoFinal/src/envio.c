@@ -18,9 +18,9 @@ static void update_status(void){
 }
 
 
-file_status_t open_file(const char * location){
+file_status_t open_file(const char * file_name){
     
-    if((fptr = fopen(location, "r")) != NULL){
+    if((fptr = fopen(file_name, "r")) != NULL){
         status_img = OK;
     }
     else{
