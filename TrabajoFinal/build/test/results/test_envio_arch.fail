@@ -1,0 +1,18 @@
+---
+:source:
+  :path: test
+  :file: test_envio_arch.c
+:successes: []
+:failures:
+- :test: test_fail_function
+  :line: 18
+  :message: Test inicial de prueba!!!
+  :unity_test_time: 0
+:ignores: []
+:counts:
+  :total: 1
+  :passed: 0
+  :failed: 1
+  :ignored: 0
+:stdout: []
+:time: 0.003547710000020743
