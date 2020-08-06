@@ -4,15 +4,47 @@
   :file: test_envio_arch.c
 :successes:
 - :test: test_open_file
-  :line: 23
+  :line: 27
+  :message: ''
+  :unity_test_time: 0
+- :test: test_create_start_of_frame
+  :line: 35
+  :message: ''
+  :unity_test_time: 0
+- :test: test_create_data_frame
+  :line: 43
+  :message: ''
+  :unity_test_time: 0
+- :test: test_split_file
+  :line: 51
+  :message: ''
+  :unity_test_time: 0
+- :test: test_create_end_of_frame
+  :line: 57
   :message: ''
   :unity_test_time: 0
 :failures: []
 :ignores: []
 :counts:
-  :total: 1
-  :passed: 1
+  :total: 5
+  :passed: 5
   :failed: 0
   :ignored: 0
-:stdout: []
-:time: 0.001843522999479319
+:stdout:
+- "$SOTX:150*1E"
+- $DATA:<?xml version="1.0" standalone="yes"?>
+- "*05"
+- "$DATA:<NewDataSet>"
+- "*B5"
+- "$DATA:  <Admin>"
+- "*0E"
+- "$DATA:    <Key>litros_xha_seteados</Key>"
+- "*54"
+- "$DATA:    <Value>0</Value>"
+- "*38"
+- "$DATA:  </Admin>"
+- "*3D"
+- "$DATA:</NewDataSet>"
+- "*E4"
+- "$EOTX:150*10"
+:time: 0.0033502050000606687

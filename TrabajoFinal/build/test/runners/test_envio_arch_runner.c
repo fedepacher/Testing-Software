@@ -11,6 +11,10 @@ char* GlobalOrderError;
 extern void setUp(void);
 extern void tearDown(void);
 extern void test_open_file(void);
+extern void test_create_start_of_frame(void);
+extern void test_create_data_frame(void);
+extern void test_split_file(void);
+extern void test_create_end_of_frame(void);
 
 
 /*=======Mock Management=====*/
@@ -75,7 +79,11 @@ static void run_test(UnityTestFunction func, const char* name, int line_num)
 int main(void)
 {
   UnityBegin("test_envio_arch.c");
-  run_test(test_open_file, "test_open_file", 23);
+  run_test(test_open_file, "test_open_file", 27);
+  run_test(test_create_start_of_frame, "test_create_start_of_frame", 35);
+  run_test(test_create_data_frame, "test_create_data_frame", 43);
+  run_test(test_split_file, "test_split_file", 51);
+  run_test(test_create_end_of_frame, "test_create_end_of_frame", 57);
 
   return UnityEnd();
 }
