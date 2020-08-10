@@ -18,13 +18,26 @@ typedef enum{
     UNDEFINED  =4,
 }rx_status_t;
 
+
+/**
+ * @brief   File constuctor, initialize file status
+ * @param   buffer  process buffer
+ * @param   length  buffer's length
+ * @param   status  process status
+ */
+void rx_constructor(char * buffer, uint32_t length, rx_status_t * status);
+
 /**
  * @brief   Calculate the 2bytes CRC
  * @param   packet  packet to calculate crc 
  * @param   length  packet's length
  *  @return  CRC
  */
-uint16_t calculate_crc(const unsigned char * packet, size_t length);
+uint8_t calculate_crc(const unsigned char * packet, size_t length);
 
-
-rx_status_t get_data_frame(const char * file_name, char * buffer);
+/**
+ * @brief   Ge data from the file and reconstruct the original file
+ * @param   file_name  file where the info is read
+ *  @return OK if the file could be read otherwise ERROR
+ */
+rx_status_t get_data_frame(const char * file_name);

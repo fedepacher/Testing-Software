@@ -2,8 +2,7 @@
 #include "defs.h"
 
 
-static const char output_file_name[] = "/home/fedepacher/Desktop/Pruebas/output_file_test";
-static const char output_file_format[] = "xml";
+static const char output_file_name[] = "/home/fedepacher/Desktop/Pruebas/output_file_test.xml";
 
 //static tx_status_t * status_envio;
 static tx_status_t * status_tx;
@@ -25,6 +24,14 @@ static long int file_size(FILE * file);
  * @return  size of the file
  */ 
 static void create_frame(char * data_out, void * data_in, const char * header, const char * type_data_in);
+
+/**
+ * @brief   Create a file with start frame data frame and end frame in order to test receive functions
+ * @param   output_file_name    output file name
+ * @param   buffer              buffer to store the frame befor send it to the file 
+ *  @return  OK if the file could create it otherwise ERROR
+ */
+static tx_status_t create_file(const char * output_file_name, char * buffer);
 
 /**
  * @brief   Calculate size of file
@@ -50,16 +57,16 @@ static long int file_size(FILE * file){
  * @return  size of file
  */ 
 static void create_frame(char * data_out, void * data_in, const char * header, const char * type_data_in){
-    uint16_t crc; 
+    uint8_t crc; 
     sprintf((char*)data_out, "%c", SCH);
     sprintf((char*)data_out + strlen((char*)data_out), "%s", header);
     sprintf((char*)data_out + strlen((char*)data_out), type_data_in, data_in);
     crc = calculate_crc(data_out + 1, strlen((char*)data_out) - 1);
     sprintf((char*)data_out + strlen((char*)data_out), "%c", ACH);
     sprintf((char*)data_out + strlen((char*)data_out), "%02X", crc);
-    
+
     //Create a file to debug the receive file
-    create_file(output_file_name, output_file_format, data_out);
+    create_file(output_file_name, data_out);
 }
 
 /**
@@ -72,7 +79,7 @@ void tx_constructor(char * buffer, uint32_t length, tx_status_t * status){
     status_img = UNDEFINED;
     *status = status_img;
     memset((char*)buffer, '\0', length);
-
+    
 }
 
 
@@ -108,7 +115,7 @@ tx_status_t close_file(FILE * file){
 
 
 tx_status_t create_start_of_frame(const char * file_name, char * buffer){
-    //status_img = create_frame(file_name, buffer, SOTX);
+    
     unsigned long file_length = 0;
     FILE * file_aux = fopen(file_name, "r");
            
@@ -124,8 +131,7 @@ tx_status_t create_start_of_frame(const char * file_name, char * buffer){
         }
         else{
           status_img = ERROR;
-        } 
-               
+        }              
     }
     fclose(file_aux);
     update_status();
@@ -156,7 +162,7 @@ tx_status_t create_end_of_frame(const char * file_name, char * buffer){
     return status_img;
 }
 
-uint16_t calculate_crc(const unsigned char * packet, size_t length){
+uint8_t calculate_crc(const unsigned char * packet, size_t length){
      unsigned int sum;       // nothing gained in using smaller types!
     for ( sum = 0 ; length != 0 ; length-- )
         sum += *(packet++);   // parenthesis not required!
@@ -199,22 +205,26 @@ tx_status_t create_data_frame(const char * file_name, char * buffer){
 }
  
 
-tx_status_t create_file(const char * output_file_name, const char * format, char * buffer){
-    char newFileName[MAX_LENGTH];
+static tx_status_t create_file(const char * output_file_name, char * buffer){
+    
     char buffer_aux[MAX_LENGTH];
     uint32_t length;
     FILE *fp1;
-    memset(buffer_aux, '\0', MAX_LENGTH);
-    sprintf(buffer_aux, buffer);
-    sprintf(newFileName, "%s%d.%s", output_file_name, 0, format);
-    fp1 = fopen(newFileName, "a");
+    memset(buffer_aux, '\0', MAX_LENGTH);   //clean the aux buffer
+    sprintf(buffer_aux, "%s", buffer);      //copy buffer to aux buffer
+    
+    fp1 = fopen(output_file_name, "a");     //create output file
     if(fp1 != NULL)
     {   
         length = strlen(buffer_aux);
-        *(buffer_aux + length) = '\n';
-        fputs(buffer_aux, fp1);        
-    }   
-    fclose(fp1);
+        *(buffer_aux + length) = '\n';      //add \n at the end of the file
+        fputs(buffer_aux, fp1);             //append data to the file   
+    }
+    else{
+        return ERROR;   
+    }
+    fclose(fp1);                            //close file
+    return OK;
 }
 
 /*tx_status_t split_file(const char * file_name, const char * output_file_name, const char * format, char * buffer, const uint32_t length_split){

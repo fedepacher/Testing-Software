@@ -1,7 +1,7 @@
 #include "unity.h"
 #include "recibir.h"
 
-static const char file_namea[] = "/home/fedepacher/Desktop/Pruebas/output_split_0.xml";
+static const char file_name[] = "/home/fedepacher/Desktop/Pruebas/output_file_test1.xml";
 static rx_status_t file_status;
 static char buffera[BUFFER_SIZE];
 
@@ -22,6 +22,6 @@ void tearDown(void){
 
 //! @test   Get data frame from file function
 void test_get_data_frame(void){
-    file_status = get_data_frame(file_namea, buffera);
+    file_status = get_data_frame(file_name);
     TEST_ASSERT_EQUAL(OK, file_status);
 }

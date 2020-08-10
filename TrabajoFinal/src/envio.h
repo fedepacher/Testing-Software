@@ -30,14 +30,14 @@ void tx_constructor(char * buffer, uint32_t length, tx_status_t * status);
 /**
  * @brief   Open file
  * @param   file_name    file dir
- * @return  OK if the file could open otherwise ERROR
+ * @return  OK if the file could be opened otherwise ERROR
  */
 tx_status_t open_file(const char * file_name);
 
 /**
  * @brief   Close file and update status
  * @param   file         file pointer 
- * @return  OK if the file could open otherwise ERROR
+ * @return  OK if the file could be opened otherwise ERROR
  */
 tx_status_t close_file(FILE * file);
 
@@ -49,7 +49,7 @@ tx_status_t close_file(FILE * file);
  * 
  * @param   file_name    file name
  * @param   buffer       buffer to store the packet 
- * @return  OK if the file could open otherwise ERROR
+ * @return  OK if the file could be opened otherwise ERROR
  */
 tx_status_t create_start_of_frame(const char * file_name, char * buffer);
 
@@ -60,7 +60,7 @@ tx_status_t create_start_of_frame(const char * file_name, char * buffer);
  * 
  * @param   file_name    file name
  * @param   buffer       buffer to store the packet 
- * @return  OK if the file could open otherwise ERROR
+ * @return  OK if the file could be opened otherwise ERROR
  */
 tx_status_t create_end_of_frame(const char * file_name, char * buffer);
 
@@ -71,7 +71,7 @@ tx_status_t create_end_of_frame(const char * file_name, char * buffer);
  * 
  * @param   file_name    file name
  * @param   buffer       buffer to store the packet 
- * @return  OK if the file could open otherwise ERROR
+ * @return  OK if the file could be opened otherwise ERROR
  */ 
 tx_status_t create_data_frame(const char * file_name, char * buffer);
 
@@ -82,24 +82,6 @@ tx_status_t create_data_frame(const char * file_name, char * buffer);
  * @param   length  packet's length
  *  @return  CRC
  */
-uint16_t calculate_crc(const unsigned char * packet, size_t length);
+uint8_t calculate_crc(const unsigned char * packet, size_t length);
 
-/**
- * @brief   Split the file into smaller files and create the data frame to be sent
- * @param   file_name           input file name
- * @param   output_file_name    output file name
- * @param   format              file format
- * @param   buffer              buffer to store the frame befor send it to the file 
- * @param   length_split        maximun output file length in bytes
- *  @return  CRC
- */
-//tx_status_t split_file(const char * file_name, const char * output_file_name, const char * format, char * buffer, const uint32_t length_split);
 
-/**
- * @brief   Create a file with start frame data frame and end frame in order to test receive functions
- * @param   output_file_name    output file name
- * @param   format              file format
- * @param   buffer              buffer to store the frame befor send it to the file 
- *  @return  CRC
- */
-tx_status_t create_file(const char * output_file_name, const char * format, char * buffer);
