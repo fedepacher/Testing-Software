@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 #define MAX_LENGTH      255  
-#define BUFFER_SIZE     50  //bytes to be sent in a packet
+#define BUFFER_SIZE     255  //bytes to be sent in a packet
 #define CRC_SIZE        2   //2 crc bytes
 #define ASTERISCO_SIZE  1   //1 byte for *
 #define FIRST_CHAR_SIZE 1   //1 byte for $
@@ -16,7 +16,7 @@ typedef enum{
     ERROR = 1,
     INPROGRESS = 2,
     UNDEFINED  =4,
-}file_status_t;
+}tx_status_t;
 
 
 /**
@@ -25,21 +25,21 @@ typedef enum{
  * @param   length  buffer's length
  * @param   status  process status
  */
-void file_constructor(char * buffer, uint32_t length, file_status_t * status);
+void tx_constructor(char * buffer, uint32_t length, tx_status_t * status);
 
 /**
  * @brief   Open file
  * @param   file_name    file dir
  * @return  OK if the file could open otherwise ERROR
  */
-file_status_t open_file(const char * file_name);
+tx_status_t open_file(const char * file_name);
 
 /**
  * @brief   Close file and update status
  * @param   file         file pointer 
  * @return  OK if the file could open otherwise ERROR
  */
-file_status_t close_file(FILE * file);
+tx_status_t close_file(FILE * file);
 
 
 /**
@@ -51,7 +51,7 @@ file_status_t close_file(FILE * file);
  * @param   buffer       buffer to store the packet 
  * @return  OK if the file could open otherwise ERROR
  */
-file_status_t create_start_of_frame(const char * file_name, char * buffer);
+tx_status_t create_start_of_frame(const char * file_name, char * buffer);
 
 /**
  * @brief   Create the end frame to be sent
@@ -62,7 +62,7 @@ file_status_t create_start_of_frame(const char * file_name, char * buffer);
  * @param   buffer       buffer to store the packet 
  * @return  OK if the file could open otherwise ERROR
  */
-file_status_t create_end_of_frame(const char * file_name, char * buffer);
+tx_status_t create_end_of_frame(const char * file_name, char * buffer);
 
 /**
  * @brief   Create data frames to be sent, read each file's line and create the frame as follow
@@ -73,7 +73,7 @@ file_status_t create_end_of_frame(const char * file_name, char * buffer);
  * @param   buffer       buffer to store the packet 
  * @return  OK if the file could open otherwise ERROR
  */ 
-file_status_t create_data_frame(const char * file_name, char * buffer);
+tx_status_t create_data_frame(const char * file_name, char * buffer);
 
 
 /**
@@ -93,4 +93,4 @@ uint16_t calculate_crc(const unsigned char * packet, size_t length);
  * @param   length_split        maximun output file length in bytes
  *  @return  CRC
  */
-file_status_t split_file(const char * file_name, const char * output_file_name, const char * format, char * buffer, const uint32_t length_split);
+tx_status_t split_file(const char * file_name, const char * output_file_name, const char * format, char * buffer, const uint32_t length_split);

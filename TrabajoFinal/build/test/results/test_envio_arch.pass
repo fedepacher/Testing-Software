@@ -8,19 +8,19 @@
   :message: ''
   :unity_test_time: 0
 - :test: test_create_start_of_frame
-  :line: 35
+  :line: 34
   :message: ''
   :unity_test_time: 0
 - :test: test_create_data_frame
-  :line: 43
+  :line: 42
   :message: ''
   :unity_test_time: 0
 - :test: test_split_file
-  :line: 51
+  :line: 48
   :message: ''
   :unity_test_time: 0
 - :test: test_create_end_of_frame
-  :line: 57
+  :line: 54
   :message: ''
   :unity_test_time: 0
 :failures: []
@@ -47,4 +47,4 @@
 - "$DATA:</NewDataSet>"
 - "*E4"
 - "$EOTX:150*10"
-:time: 0.0033502050000606687
+:time: 0.0058415390000163825

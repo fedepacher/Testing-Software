@@ -9,11 +9,11 @@ static const char output_file_name[] = "/home/fedepacher/Desktop/Pruebas/output_
 
 static const char output_file_format[] = "xml";
 
-static file_status_t file_status;
+static tx_status_t file_status;
 
 static FILE file;
 
-static char buffer[1 + 5 + 50 + 1 + 2];
+static char buffer[255];
 
 
 
@@ -21,7 +21,7 @@ static char buffer[1 + 5 + 50 + 1 + 2];
 
 void setUp(void){
 
-    file_constructor(buffer, strlen((char*)buffer), &file_status);
+    tx_constructor(buffer, strlen((char*)buffer), &file_status);
 
 }
 
@@ -51,15 +51,13 @@ void tearDown(void){
 
 void test_open_file(void){
 
-
-
     file_status = open_file(file_name);
 
     UnityAssertEqualNumber((UNITY_INT)((OK)), (UNITY_INT)((file_status)), (
 
    ((void *)0)
 
-   ), (UNITY_UINT)(30), UNITY_DISPLAY_STYLE_INT);
+   ), (UNITY_UINT)(29), UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -79,13 +77,13 @@ void test_create_start_of_frame(void){
 
    ((void *)0)
 
-   ), (UNITY_UINT)(38), UNITY_DISPLAY_STYLE_INT);
+   ), (UNITY_UINT)(37), UNITY_DISPLAY_STYLE_INT);
 
     UnityAssertEqualString((const char*)(("$SOTX:150*1E")), (const char*)((buffer)), (
 
    ((void *)0)
 
-   ), (UNITY_UINT)(39));
+   ), (UNITY_UINT)(38));
 
 }
 
@@ -97,15 +95,11 @@ void test_create_data_frame(void){
 
     file_status = create_data_frame(file_name, &buffer[0]);
 
-
-
     UnityAssertEqualNumber((UNITY_INT)((OK)), (UNITY_INT)((file_status)), (
 
    ((void *)0)
 
-   ), (UNITY_UINT)(46), UNITY_DISPLAY_STYLE_INT);
-
-
+   ), (UNITY_UINT)(44), UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -121,7 +115,7 @@ void test_split_file(void){
 
    ((void *)0)
 
-   ), (UNITY_UINT)(53), UNITY_DISPLAY_STYLE_INT);
+   ), (UNITY_UINT)(50), UNITY_DISPLAY_STYLE_INT);
 
 }
 
@@ -139,12 +133,12 @@ void test_create_end_of_frame(void){
 
    ((void *)0)
 
-   ), (UNITY_UINT)(60), UNITY_DISPLAY_STYLE_INT);
+   ), (UNITY_UINT)(57), UNITY_DISPLAY_STYLE_INT);
 
     UnityAssertEqualString((const char*)(("$EOTX:150*10")), (const char*)((buffer)), (
 
    ((void *)0)
 
-   ), (UNITY_UINT)(61));
+   ), (UNITY_UINT)(58));
 
 }

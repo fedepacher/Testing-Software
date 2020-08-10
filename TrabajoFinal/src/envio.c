@@ -1,17 +1,13 @@
 #include "envio.h"
-
-
-const char ACH  = '*';
-const char SCH  = '$';
-const char SOTX[] = "SOTX:";
-const char DATA[] = "DATA:";
-const char EOTX[] = "EOTX:";
+#include "defs.h"
 
 
 
-//static file_status_t * status_envio;
-static file_status_t * status_archivo;
-static file_status_t status_img;
+
+
+//static tx_status_t * status_envio;
+static tx_status_t * status_tx;
+static tx_status_t status_img;
 
 /**
  * @brief   Get the file's size
@@ -63,10 +59,13 @@ static void create_frame(char * data_out, void * data_in, const char * header, c
     sprintf((char*)data_out + strlen((char*)data_out), "%02X", crc);
 }
 
+/**
+ * @brief   Update status
+ */ 
+static void update_status(void);
 
-
-void file_constructor(char * buffer, uint32_t length, file_status_t * status){
-    status_archivo = status;
+void tx_constructor(char * buffer, uint32_t length, tx_status_t * status){
+    status_tx = status;
     status_img = UNDEFINED;
     *status = status_img;
     memset((char*)buffer, '\0', length);
@@ -76,11 +75,11 @@ void file_constructor(char * buffer, uint32_t length, file_status_t * status){
 
 
 static void update_status(void){
-    *status_archivo = status_img;
+    *status_tx = status_img;
 }
 
 
-file_status_t open_file(const char * file_name){
+tx_status_t open_file(const char * file_name){
     FILE * file = NULL;
 
     file = fopen(file_name, "r");
@@ -92,7 +91,7 @@ file_status_t open_file(const char * file_name){
     return ERROR;
 }
 
-file_status_t close_file(FILE * file){
+tx_status_t close_file(FILE * file){
     
     if(file != NULL){
         fclose(file); //sale error cuand lo cierro
@@ -106,7 +105,7 @@ file_status_t close_file(FILE * file){
 }
 
 
-file_status_t create_start_of_frame(const char * file_name, char * buffer){
+tx_status_t create_start_of_frame(const char * file_name, char * buffer){
     //status_img = create_frame(file_name, buffer, SOTX);
     unsigned long file_length = 0;
     FILE * file_aux = fopen(file_name, "r");
@@ -131,7 +130,7 @@ file_status_t create_start_of_frame(const char * file_name, char * buffer){
     return status_img;
 }
 
-file_status_t create_end_of_frame(const char * file_name, char * buffer){
+tx_status_t create_end_of_frame(const char * file_name, char * buffer){
     unsigned long file_length = 0;
     FILE * file_aux = fopen(file_name, "r");
            
@@ -163,7 +162,7 @@ uint16_t calculate_crc(const unsigned char * packet, size_t length){
 }
 
 
-file_status_t create_data_frame(const char * file_name, char * buffer){
+tx_status_t create_data_frame(const char * file_name, char * buffer){
 
     int i, len, accum;
     FILE *fp1;
@@ -191,7 +190,7 @@ file_status_t create_data_frame(const char * file_name, char * buffer){
  
 
 
-file_status_t split_file(const char * file_name, const char * output_file_name, const char * format, char * buffer, const uint32_t length_split){
+tx_status_t split_file(const char * file_name, const char * output_file_name, const char * format, char * buffer, const uint32_t length_split){
     int segments=0, i, len, accum;
     FILE *fp1, *fp2;
     long sizeFile;

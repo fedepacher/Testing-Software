@@ -80,10 +80,10 @@ int main(void)
 {
   UnityBegin("test_envio_arch.c");
   run_test(test_open_file, "test_open_file", 27);
-  run_test(test_create_start_of_frame, "test_create_start_of_frame", 35);
-  run_test(test_create_data_frame, "test_create_data_frame", 43);
-  run_test(test_split_file, "test_split_file", 51);
-  run_test(test_create_end_of_frame, "test_create_end_of_frame", 57);
+  run_test(test_create_start_of_frame, "test_create_start_of_frame", 34);
+  run_test(test_create_data_frame, "test_create_data_frame", 42);
+  run_test(test_split_file, "test_split_file", 48);
+  run_test(test_create_end_of_frame, "test_create_end_of_frame", 54);
 
   return UnityEnd();
 }
