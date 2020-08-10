@@ -3,7 +3,7 @@
 #include "/var/lib/gems/2.5.0/gems/ceedling-0.30.0/vendor/unity/src/unity.h"
 
 
-static const char file_name[] = "/home/fedepacher/Desktop/Pruebas/MSystem0.xml";
+static const char file_name[] = "/home/fedepacher/CESE/Testing Soft/PracticaGit/Testing-Software/TrabajoFinal/MSystem0.xml";
 
 static const char output_file_format[] = "xml";
 
@@ -77,7 +77,7 @@ void test_create_start_of_frame(void){
 
    ), (UNITY_UINT)(36), UNITY_DISPLAY_STYLE_INT);
 
-    UnityAssertEqualString((const char*)(("$SOTX:150*1E")), (const char*)((buffer)), (
+    UnityAssertEqualString((const char*)(("$SOTX:1669*5E")), (const char*)((buffer)), (
 
    ((void *)0)
 
@@ -117,7 +117,7 @@ void test_create_end_of_frame(void){
 
    ), (UNITY_UINT)(50), UNITY_DISPLAY_STYLE_INT);
 
-    UnityAssertEqualString((const char*)(("$EOTX:150*10")), (const char*)((buffer)), (
+    UnityAssertEqualString((const char*)(("$EOTX:1669*50")), (const char*)((buffer)), (
 
    ((void *)0)
 

@@ -2,13 +2,15 @@
 #include "defs.h"
 
 
-static const char input_file_name[] = "/home/fedepacher/Desktop/Pruebas/output_file_test1.xml";
+static const char input_file_name[] = "/home/fedepacher/CESE/Testing Soft/PracticaGit/Testing-Software/TrabajoFinal/output_file_test.xml";
 
 
 static rx_status_t * status_rx;
 static rx_status_t status_img;
 
-static rx_status_t check_crc(const char * line, uint32_t length);
+static void get_body(const char * line, uint32_t length, char * body);
+
+static rx_status_t check_crc(const char * line, const char * body, uint32_t line_length, uint32_t body_length);
 
 /**
  * @brief   Convert hexadecimal to string
@@ -45,79 +47,109 @@ void rx_constructor(char * buffer, uint32_t length, rx_status_t * status){
 
 rx_status_t get_data_frame(const char * file_name){
     FILE *fp1;
-    
-    
+    rx_status_t status_head = UNDEFINED;
+    rx_status_t status_body = UNDEFINED;
+    rx_status_t status_tail = UNDEFINED;  
+    uint32_t packet_length_start=0;
+    uint32_t packet_length_end=0;
     char line[MAX_LENGTH];
-    char head[HEADER_SIZE + 1];
-    
-    
+    char body[MAX_LENGTH];
+    char head[HEADER_SIZE + 1];    
+    uint32_t accum = 0; 
 
     memset(line, '\0', MAX_LENGTH);
-    memset(head, '\0', HEADER_SIZE);
-
+    
+   
     fp1 = fopen(file_name, "r");
     if(fp1 != NULL)
     {
         while(fgets(line, MAX_LENGTH, fp1))
         {          
             if(line[0] == '$'){
+                memset(head, '\0', HEADER_SIZE);
                 strncpy(head, (char*)(line + 1) , HEADER_SIZE);    //get the head
                 head[HEADER_SIZE] = '\0';
-                //printf("%s", head);
 
-                if(strcmp(head, SOTX)){
-                    status_img = check_crc(line, strlen((char *)line));
+                if(strcmp(head, SOTX) == 0){
+                    memset(body, '\0', MAX_LENGTH);
+                    get_body(line, strlen((char *)line), body);
+                    status_head = check_crc(line, body, strlen((char *)line), strlen((char *)body));
+                    packet_length_start = atoi(body + HEADER_SIZE);
+                    
                 }
                 
-                if(strcmp(head, DATA) == 0){                    
-                    status_img = check_crc(line, strlen((char *)line));
+                if(strcmp(head, DATA) == 0){   
+                    memset(body, '\0', MAX_LENGTH);   
+                    //printf("%ld%c%c", strlen((char *)line), '\r', '\n');              
+                    accum += strlen((char *)line) - 8; //-8 to remove $DATA: and *CRC
+                    //printf("%s%c%c", line, '\r', '\n'); 
+                    get_body(line, strlen((char *)line), body);
+                    status_body = check_crc(line, body, strlen((char *)line), strlen((char *)body));
+                    
                 }
-                if(strcmp(head, EOTX)){
-                    status_img = check_crc(line, strlen((char *)line));
+               
+
+                if(strcmp(head, EOTX) == 0){
+                    memset(body, '\0', MAX_LENGTH);
+                    get_body(line, strlen((char *)line), body);
+                    status_tail = check_crc(line, body, strlen((char *)line), strlen((char *)body));
+                    packet_length_end = atoi(body + HEADER_SIZE);
                 }
+                
             }
             else{
                 status_img = ERROR;
+                printf("Error Getting $\r\n");
+                break;
             }
         }
     fclose(fp1);     
     }
     else{
         status_img = ERROR;
-        printf("error 118\r\n");
+        printf("Error Opening File\r\n");
     }
 
+    if(packet_length_start == packet_length_end && packet_length_start == accum){
+        status_img = OK;
+    }
+    else{
+        status_img = ERROR;
+    }
+   /* printf("%d%c%c", packet_length_start, '\r', '\n');
+    printf("%d%c%c", packet_length_end, '\r', '\n');
+    printf("%d%c%c", accum, '\r', '\n');*/
+     
     update_status();
     return status_img;
 }
 
-static rx_status_t check_crc(const char * line, uint32_t length){
-    char body[MAX_LENGTH];
-    uint32_t get_asterisk_postion = 0;                      //indicate where in the array is the *
+static void get_body(const char * line, uint32_t length, char * body){
+    
     uint8_t crcMsg = 0;
     int32_t i;
 
-    memset(body, '\0', MAX_LENGTH);
-
-    get_asterisk_postion = 0;
     for(i = 0; i < length; i++ ){
         if(line[i + 1] != ACH){                  //+1 to avoid '$' 
             body[i] = line[i + 1];              //get the body of the packet    
         }
         else{
             body[i] = '\0';
-            get_asterisk_postion = i + 1;       //+1 to add '$'   
             break;
         }
-    }                       
+    }           
+}
+
+static rx_status_t check_crc(const char * line, const char * body, uint32_t line_length, uint32_t body_length){
+    uint8_t crcMsg = 0;
     
-    if(line[get_asterisk_postion + 1] != '\0' && line[get_asterisk_postion + 2] != '\0'){
-        length = length - 1;
+    if(line[body_length + 1] != '\0' && line[body_length + 2] != '\0'){
+        line_length = line_length - 1;
 
         // Get most significant nibble of CRC
-        crcMsg = CharToHexa(*(line + length-2)) << 4;
+        crcMsg = CharToHexa(*(line + line_length-2)) << 4;
         // Get less significant nibble of CRC and total CRC
-        crcMsg |= CharToHexa(*(line + length-1));
+        crcMsg |= CharToHexa(*(line + line_length-1));
         
         if(crcMsg == calculate_crc(body, strlen(body))){
             return OK;

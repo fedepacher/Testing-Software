@@ -2,7 +2,7 @@
 #include "defs.h"
 
 
-static const char output_file_name[] = "/home/fedepacher/Desktop/Pruebas/output_file_test.xml";
+static const char output_file_name[] = "/home/fedepacher/CESE/Testing Soft/PracticaGit/Testing-Software/TrabajoFinal/output_file_test.xml";
 
 //static tx_status_t * status_envio;
 static tx_status_t * status_tx;
