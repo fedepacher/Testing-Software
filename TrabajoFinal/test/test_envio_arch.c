@@ -2,7 +2,6 @@
 #include "envio.h"
 
 static const char file_name[] = "/home/fedepacher/Desktop/Pruebas/MSystem0.xml";
-static const char output_file_name[] = "/home/fedepacher/Desktop/Pruebas/output_split_";
 static const char output_file_format[] = "xml";
 static tx_status_t file_status;
 static FILE file;// = NULL;
@@ -42,12 +41,6 @@ void test_create_start_of_frame(void){
 void test_create_data_frame(void){
     file_status = create_data_frame(file_name, &buffer[0]);
     TEST_ASSERT_EQUAL(OK, file_status);
-}
-
-//! @test   Make a file with data frame in order to debug de the receive.c
-void test_split_file(void){
-    file_status = split_file(file_name, output_file_name, output_file_format, buffer, 2000); //2000 max size of new files
-    TEST_ASSERT_EQUAL(OK, file_status);   
 }
 
 //! @test   Create end of frame test

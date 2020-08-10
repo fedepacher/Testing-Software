@@ -4,47 +4,36 @@
   :file: test_envio_arch.c
 :successes:
 - :test: test_open_file
-  :line: 27
+  :line: 26
   :message: ''
   :unity_test_time: 0
 - :test: test_create_start_of_frame
-  :line: 34
+  :line: 33
   :message: ''
   :unity_test_time: 0
 - :test: test_create_data_frame
-  :line: 42
-  :message: ''
-  :unity_test_time: 0
-- :test: test_split_file
-  :line: 48
+  :line: 41
   :message: ''
   :unity_test_time: 0
 - :test: test_create_end_of_frame
-  :line: 54
+  :line: 47
   :message: ''
   :unity_test_time: 0
 :failures: []
 :ignores: []
 :counts:
-  :total: 5
-  :passed: 5
+  :total: 4
+  :passed: 4
   :failed: 0
   :ignored: 0
 :stdout:
 - "$SOTX:150*1E"
-- $DATA:<?xml version="1.0" standalone="yes"?>
-- "*05"
-- "$DATA:<NewDataSet>"
-- "*B5"
-- "$DATA:  <Admin>"
-- "*0E"
-- "$DATA:    <Key>litros_xha_seteados</Key>"
-- "*54"
-- "$DATA:    <Value>0</Value>"
-- "*38"
-- "$DATA:  </Admin>"
-- "*3D"
-- "$DATA:</NewDataSet>"
-- "*E4"
+- $DATA:<?xml version="1.0" standalone="yes"?>*EE
+- "$DATA:<NewDataSet>*9E"
+- "$DATA:  <Admin>*F7"
+- "$DATA:    <Key>litros_xha_seteados</Key>*3D"
+- "$DATA:    <Value>0</Value>*21"
+- "$DATA:  </Admin>*26"
+- "$DATA:</NewDataSet>*CD"
 - "$EOTX:150*10"
-:time: 0.0058415390000163825
+:time: 0.003757030999622657

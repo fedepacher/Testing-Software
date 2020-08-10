@@ -13,7 +13,6 @@ extern void tearDown(void);
 extern void test_open_file(void);
 extern void test_create_start_of_frame(void);
 extern void test_create_data_frame(void);
-extern void test_split_file(void);
 extern void test_create_end_of_frame(void);
 
 
@@ -79,11 +78,10 @@ static void run_test(UnityTestFunction func, const char* name, int line_num)
 int main(void)
 {
   UnityBegin("test_envio_arch.c");
-  run_test(test_open_file, "test_open_file", 27);
-  run_test(test_create_start_of_frame, "test_create_start_of_frame", 34);
-  run_test(test_create_data_frame, "test_create_data_frame", 42);
-  run_test(test_split_file, "test_split_file", 48);
-  run_test(test_create_end_of_frame, "test_create_end_of_frame", 54);
+  run_test(test_open_file, "test_open_file", 26);
+  run_test(test_create_start_of_frame, "test_create_start_of_frame", 33);
+  run_test(test_create_data_frame, "test_create_data_frame", 41);
+  run_test(test_create_end_of_frame, "test_create_end_of_frame", 47);
 
   return UnityEnd();
 }

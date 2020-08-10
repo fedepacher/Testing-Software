@@ -93,4 +93,13 @@ uint16_t calculate_crc(const unsigned char * packet, size_t length);
  * @param   length_split        maximun output file length in bytes
  *  @return  CRC
  */
-tx_status_t split_file(const char * file_name, const char * output_file_name, const char * format, char * buffer, const uint32_t length_split);
+//tx_status_t split_file(const char * file_name, const char * output_file_name, const char * format, char * buffer, const uint32_t length_split);
+
+/**
+ * @brief   Create a file with start frame data frame and end frame in order to test receive functions
+ * @param   output_file_name    output file name
+ * @param   format              file format
+ * @param   buffer              buffer to store the frame befor send it to the file 
+ *  @return  CRC
+ */
+tx_status_t create_file(const char * output_file_name, const char * format, char * buffer);

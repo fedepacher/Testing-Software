@@ -2,8 +2,8 @@
 #include "defs.h"
 
 
-
-
+static const char output_file_name[] = "/home/fedepacher/Desktop/Pruebas/output_file_test";
+static const char output_file_format[] = "xml";
 
 //static tx_status_t * status_envio;
 static tx_status_t * status_tx;
@@ -52,11 +52,14 @@ static long int file_size(FILE * file){
 static void create_frame(char * data_out, void * data_in, const char * header, const char * type_data_in){
     uint16_t crc; 
     sprintf((char*)data_out, "%c", SCH);
-    sprintf((char*)data_out + strlen((char*)data_out), header);
+    sprintf((char*)data_out + strlen((char*)data_out), "%s", header);
     sprintf((char*)data_out + strlen((char*)data_out), type_data_in, data_in);
-    crc = calculate_crc(data_out + 1, strlen((char*)data_out));
+    crc = calculate_crc(data_out + 1, strlen((char*)data_out) - 1);
     sprintf((char*)data_out + strlen((char*)data_out), "%c", ACH);
     sprintf((char*)data_out + strlen((char*)data_out), "%02X", crc);
+    
+    //Create a file to debug the receive file
+    create_file(output_file_name, output_file_format, data_out);
 }
 
 /**
@@ -86,8 +89,7 @@ tx_status_t open_file(const char * file_name){
     
     if(file != NULL){
         return OK;
-    }
-    
+    }    
     return ERROR;
 }
 
@@ -174,6 +176,14 @@ tx_status_t create_data_frame(const char * file_name, char * buffer){
     {
         while(fgets(line, MAX_LENGTH, fp1))
         {
+            len = strlen(line);
+            if(line[len - 2] == '\r' && line[len - 1] == '\n'){
+                line[len - 2] = '\0';
+            }
+            else{
+                if(line[len - 1] == '\n')
+                    line[len - 1] = '\0';               
+            }
             create_frame(buffer, (char*)line,  DATA, "%s");
             printf("%s%c%c", buffer, '\r', '\n');
         }
@@ -189,8 +199,25 @@ tx_status_t create_data_frame(const char * file_name, char * buffer){
 }
  
 
+tx_status_t create_file(const char * output_file_name, const char * format, char * buffer){
+    char newFileName[MAX_LENGTH];
+    char buffer_aux[MAX_LENGTH];
+    uint32_t length;
+    FILE *fp1;
+    memset(buffer_aux, '\0', MAX_LENGTH);
+    sprintf(buffer_aux, buffer);
+    sprintf(newFileName, "%s%d.%s", output_file_name, 0, format);
+    fp1 = fopen(newFileName, "a");
+    if(fp1 != NULL)
+    {   
+        length = strlen(buffer_aux);
+        *(buffer_aux + length) = '\n';
+        fputs(buffer_aux, fp1);        
+    }   
+    fclose(fp1);
+}
 
-tx_status_t split_file(const char * file_name, const char * output_file_name, const char * format, char * buffer, const uint32_t length_split){
+/*tx_status_t split_file(const char * file_name, const char * output_file_name, const char * format, char * buffer, const uint32_t length_split){
     int segments=0, i, len, accum;
     FILE *fp1, *fp2;
     long sizeFile;
@@ -217,8 +244,18 @@ tx_status_t split_file(const char * file_name, const char * output_file_name, co
             {
                while(fgets(line, MAX_LENGTH, fp1) && accum <= length_split)
                {
+                    len = strlen(line);
+                    if(line[len - 2] == '\r' && line[len - 1] == '\n'){
+                        line[len - 2] = '\0';
+                    }
+                    else{
+                        if(line[len - 1] == '\n')
+                            line[len - 1] = '\0';               
+                    }
                     create_frame(buffer, (char*)line,  DATA, "%s");
                     accum += strlen(buffer);//track size of growing file
+                    *(buffer+accum) = '\r';
+                    *(buffer+accum + 1) = '\n';
                     fputs(buffer, fp2);
                }
                fclose(fp2);
@@ -237,4 +274,4 @@ tx_status_t split_file(const char * file_name, const char * output_file_name, co
 
     update_status();
     return status_img;
-}
+}*/
