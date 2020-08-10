@@ -8,8 +8,22 @@ static const char input_file_name[] = "/home/fedepacher/CESE/Testing Soft/Practi
 static rx_status_t * status_rx;
 static rx_status_t status_img;
 
+/**
+ * @brief   Get the data bofy
+ * @param line     line read from file
+ * @param length   line's length
+ * @param body      buffer to store the data body $DATA: BODY *CRC     
+ */ 
 static void get_body(const char * line, uint32_t length, char * body);
 
+/**
+ * @brief   Check frame crc
+ * @param line          line read from file
+ * @param body          buffer to store the data body $DATA: BODY *CRC
+ * @param line_length   line's length
+ * @param body_length   body's length
+ * @return OK if the file could be read otherwise ERROR
+ */ 
 static rx_status_t check_crc(const char * line, const char * body, uint32_t line_length, uint32_t body_length);
 
 /**
@@ -57,43 +71,37 @@ rx_status_t get_data_frame(const char * file_name){
     char head[HEADER_SIZE + 1];    
     uint32_t accum = 0; 
 
-    memset(line, '\0', MAX_LENGTH);
-    
+    memset(line, '\0', MAX_LENGTH);    
    
     fp1 = fopen(file_name, "r");
     if(fp1 != NULL)
     {
         while(fgets(line, MAX_LENGTH, fp1))
         {          
-            if(line[0] == '$'){
+            if(line[0] == '$'){                                     //get the first cahr of the line
                 memset(head, '\0', HEADER_SIZE);
                 strncpy(head, (char*)(line + 1) , HEADER_SIZE);    //get the head
                 head[HEADER_SIZE] = '\0';
 
-                if(strcmp(head, SOTX) == 0){
+                if(strcmp(head, SOTX) == 0){                        //check if it is the start of frame SOTX:
                     memset(body, '\0', MAX_LENGTH);
-                    get_body(line, strlen((char *)line), body);
-                    status_head = check_crc(line, body, strlen((char *)line), strlen((char *)body));
-                    packet_length_start = atoi(body + HEADER_SIZE);
-                    
+                    get_body(line, strlen((char *)line), body);     //get the body
+                    status_head = check_crc(line, body, strlen((char *)line), strlen((char *)body));    //check crc
+                    packet_length_start = atoi(body + HEADER_SIZE);     //get the length of tx file                    
                 }
                 
-                if(strcmp(head, DATA) == 0){   
-                    memset(body, '\0', MAX_LENGTH);   
-                    //printf("%ld%c%c", strlen((char *)line), '\r', '\n');              
-                    accum += strlen((char *)line) - 8; //-8 to remove $DATA: and *CRC
-                    //printf("%s%c%c", line, '\r', '\n'); 
-                    get_body(line, strlen((char *)line), body);
+                if(strcmp(head, DATA) == 0){                        //check if it is the body of frame DATA:
+                    memset(body, '\0', MAX_LENGTH);                
+                    accum += strlen((char *)line) - 8;              //-8 to remove $DATA: and *CRC
+                    get_body(line, strlen((char *)line), body);     
                     status_body = check_crc(line, body, strlen((char *)line), strlen((char *)body));
-                    
                 }
                
-
-                if(strcmp(head, EOTX) == 0){
+                if(strcmp(head, EOTX) == 0){                        //check if it is the start of frame EOTX:
                     memset(body, '\0', MAX_LENGTH);
                     get_body(line, strlen((char *)line), body);
                     status_tail = check_crc(line, body, strlen((char *)line), strlen((char *)body));
-                    packet_length_end = atoi(body + HEADER_SIZE);
+                    packet_length_end = atoi(body + HEADER_SIZE);   //get the length of tx file    
                 }
                 
             }

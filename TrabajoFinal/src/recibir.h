@@ -38,6 +38,6 @@ uint8_t calculate_crc(const unsigned char * packet, size_t length);
 /**
  * @brief   Ge data from the file and reconstruct the original file
  * @param   file_name  file where the info is read
- *  @return OK if the file could be read otherwise ERROR
+ * @return OK if the file could be read otherwise ERROR
  */
 rx_status_t get_data_frame(const char * file_name);
