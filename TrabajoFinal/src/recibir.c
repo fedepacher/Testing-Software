@@ -70,6 +70,7 @@ rx_status_t get_data_frame(const char * file_name){
     char body[MAX_LENGTH];
     char head[HEADER_SIZE + 1];    
     uint32_t accum = 0; 
+    uint8_t cont_lineas=0;
 
     memset(line, '\0', MAX_LENGTH);    
    
@@ -77,8 +78,10 @@ rx_status_t get_data_frame(const char * file_name){
     if(fp1 != NULL)
     {
         while(fgets(line, MAX_LENGTH, fp1))
-        {          
-            if(line[0] == '$'){                                     //get the first cahr of the line
+        {   
+                 
+            printf("%s, %d", line, strlen(line));  
+            if(line[0] == '$'){                                     //get the first char of the line
                 memset(head, '\0', HEADER_SIZE);
                 strncpy(head, (char*)(line + 1) , HEADER_SIZE);    //get the head
                 head[HEADER_SIZE] = '\0';
@@ -91,8 +94,10 @@ rx_status_t get_data_frame(const char * file_name){
                 }
                 
                 if(strcmp(head, DATA) == 0){                        //check if it is the body of frame DATA:
-                    memset(body, '\0', MAX_LENGTH);                
-                    accum += strlen((char *)line) - 8;              //-8 to remove $DATA: and *CRC
+                    memset(body, '\0', MAX_LENGTH); 
+                    cont_lineas++;                 
+                    accum += strlen((char *)line) - 10;              //-10 to remove "$DATA:" and '*' CRC(2bytes) '\r'  
+                    printf("%d%c%c", accum, '\r', '\n'); 
                     get_body(line, strlen((char *)line), body);     
                     status_body = check_crc(line, body, strlen((char *)line), strlen((char *)body));
                 }
@@ -103,7 +108,6 @@ rx_status_t get_data_frame(const char * file_name){
                     status_tail = check_crc(line, body, strlen((char *)line), strlen((char *)body));
                     packet_length_end = atoi(body + HEADER_SIZE);   //get the length of tx file    
                 }
-                
             }
             else{
                 status_img = ERROR;
@@ -118,16 +122,17 @@ rx_status_t get_data_frame(const char * file_name){
         printf("Error Opening File\r\n");
     }
 
-    if(packet_length_start == packet_length_end && packet_length_start == accum){
+    int total_accum = accum + ((cont_lineas - 1) * 2);  //
+    if(packet_length_start == packet_length_end && packet_length_start == total_accum){
         status_img = OK;
     }
     else{
         status_img = ERROR;
     }
-   /* printf("%d%c%c", packet_length_start, '\r', '\n');
-    printf("%d%c%c", packet_length_end, '\r', '\n');
-    printf("%d%c%c", accum, '\r', '\n');*/
-     
+    printf("Bytes archivo: %d%c%c", packet_length_start, '\r', '\n');
+    printf("Bytes esperados: %d%c%c", packet_length_end, '\r', '\n');
+    printf("Bytes recibidos: %d%c%c", total_accum, '\r', '\n');
+    printf("Lineas recibidos: %d%c%c", cont_lineas, '\r', '\n');
     update_status();
     return status_img;
 }
@@ -159,7 +164,7 @@ static rx_status_t check_crc(const char * line, const char * body, uint32_t line
         // Get less significant nibble of CRC and total CRC
         crcMsg |= CharToHexa(*(line + line_length-1));
         
-        if(crcMsg == calculate_crc(body, strlen(body))){
+        if(crcMsg == calculate_crc(body, body_length)){
             return OK;
         }
         else

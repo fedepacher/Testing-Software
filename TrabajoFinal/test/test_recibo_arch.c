@@ -1,7 +1,7 @@
 #include "unity.h"
 #include "recibir.h"
 
-static const char file_name[] = "/home/fedepacher/Desktop/Pruebas/output_file_test1.xml";
+static const char file_name[] = "/home/fedepacher/CESE/Testing Soft/PracticaGit/Testing-Software/TrabajoFinal/output_file_test.xml";
 static rx_status_t file_status;
 static char buffera[BUFFER_SIZE];
 
