@@ -78,9 +78,7 @@ rx_status_t get_data_frame(const char * file_name){
     if(fp1 != NULL)
     {
         while(fgets(line, MAX_LENGTH, fp1))
-        {   
-                 
-            printf("%s, %d", line, strlen(line));  
+        {     
             if(line[0] == '$'){                                     //get the first char of the line
                 memset(head, '\0', HEADER_SIZE);
                 strncpy(head, (char*)(line + 1) , HEADER_SIZE);    //get the head
@@ -97,7 +95,7 @@ rx_status_t get_data_frame(const char * file_name){
                     memset(body, '\0', MAX_LENGTH); 
                     cont_lineas++;                 
                     accum += strlen((char *)line) - 10;              //-10 to remove "$DATA:" and '*' CRC(2bytes) '\r'  
-                    printf("%d%c%c", accum, '\r', '\n'); 
+                    //printf("%d%c%c", accum, '\r', '\n'); 
                     get_body(line, strlen((char *)line), body);     
                     status_body = check_crc(line, body, strlen((char *)line), strlen((char *)body));
                 }
